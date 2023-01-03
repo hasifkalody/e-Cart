@@ -1,0 +1,147 @@
+<section>
+  <div class="container">
+    <div style="margin-top: 2em;">
+      <table class="table" id="table">
+        <thead>
+          <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Title</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each Array}}
+          <tr id="{{@index}}">
+            <td><img style="height:50px ;width: 50px;" src="product_images/{{this._id}}.jpg"></td>
+            <td>{{this.product}}</td>
+            <td>{{this.Price}}</td>
+            <td><button class="btn btn-secondary"
+                onclick="cCartQ('{{this._id}}','{{this.quantity}}',-1,'{{@index}}')">-</button>
+              <p style="display: inline;" class="ml-2 mr-2" id="{{this._id}}">{{this.quantity}}</p>
+              <button class="btn btn-secondary" onclick="cCartQ('{{this._id}}','{{this.quantity}}',1)">+</button>
+            </td>
+            {{!-- <td><a href="/cartQD/{{this._id}}/{{this.quantity}}" class="btn btn-secondary">-</a>
+              <p style="display: inline;" class="ml-2 mr-2">{{this.quantity}}</p><a href="/cartQI/{{this._id}}"
+                class="btn btn-secondary">+</a>
+            </td> --}}
+            {{!-- <td><a href="/rfCart/{{_id}}" class="btn btn-danger"
+                onclick="return confirm('are you sure to remove {{this.name}} from cart')">Remove</a></td> --}}
+            <td><button class="btn btn-danger" onclick="remove('{{this._id}}','{{@index}}')">Remove</button></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="display: flex;justify-content: flex-end;padding-right: 7em;">
+    <p id="cartTotal">Total Price:{{TotalPrice}}</p>
+  </div>
+
+  <div id="Check_out" style="display: flex;justify-content: flex-end;padding-right: 5rem;margin-bottom: 3em;">
+    <a href="/checkOut" class="btn btn-success" style="width: 10em;">Check out</a>
+  </div>
+</section>
+
+<script>
+
+$(document).ready( function () {
+    $('#table').DataTable();
+} );
+  
+  function remove(pId, index) {
+    let ack = confirm('sure')
+    if (ack == true) {
+      $.ajax({
+        url: '/rfCart/' + pId,
+        success: (obj) => {
+          if (obj.count == 0) {
+            Check_out_button(obj.count)
+          }
+          document.getElementById('cart').innerHTML = obj.count
+          document.getElementById('cartTotal').innerHTML = 'Total Price:' + obj.TotalPrice
+          document.getElementById(index).remove()
+          let rowIndex = parseInt(index) + 1
+          let row = document.getElementById('table').insertRow(rowIndex)
+          row.insertCell(0).innerHTML = ' '
+          row.insertCell(1).innerHTML = ' '
+          row.insertCell(2).innerHTML = ' '
+          row.insertCell(3).innerHTML = ' '
+          row.insertCell(4).innerHTML = 'product removed'
+        }
+
+      })
+    }
+    else {
+      return
+    }
+    // console.log('gfdgfdggfgghhhhhhhhhhhhhhhhhhh')
+
+  }
+
+
+  function cCartQ(pId, quantity, value, index) {
+    quan = document.getElementById(pId).innerHTML
+    if (value == -1 & quan == 1) {
+      let conf = confirm('sure to remove item')
+      if (conf == true) {
+        quan = document.getElementById(pId).innerHTML
+        $.ajax({
+          url: '/cCartQ',
+          type: 'post',
+          data: {
+            pId: pId,
+            quantity: quan,
+            value: value
+          },
+          success: (response) => {
+            if (response.count == 0) {
+              Check_out_button(response.count)
+            }
+            document.getElementById('cart').innerHTML = response.count
+            document.getElementById('cartTotal').innerHTML = 'Total Price:' + response.TotalPrice
+            document.getElementById(index).remove()
+            let rowIndex = parseInt(index) + 1
+            let row = document.getElementById('table').insertRow(rowIndex)
+            row.insertCell(0).innerHTML = ' '
+            row.insertCell(1).innerHTML = ' '
+            row.insertCell(2).innerHTML = ' '
+            row.insertCell(3).innerHTML = 'product removed'
+            //  row.insertCell(3).style.color='red'
+            // alert('product removed')
+          }
+
+        })
+      }
+    }
+    else {
+      quan = document.getElementById(pId).innerHTML
+      $.ajax({
+        url: '/cCartQ',
+        type: 'post',
+        data: {
+          pId: pId,
+          quantity: quan,
+          value: value
+        },
+        success: (response) => {
+          document.getElementById('cartTotal').innerHTML = 'Total Price:' + response.TotalPrice
+
+          document.getElementById(pId).innerHTML = response.response
+
+
+        }
+      })
+    }
+  }
+
+
+  function Check_out_button(count) {
+    if (count == 0) {
+      $('#Check_out').hide()
+    }
+  }
+
+  Check_out_button({{ count }})
+</script>

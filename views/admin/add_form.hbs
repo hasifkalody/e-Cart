@@ -1,0 +1,30 @@
+<div class="container">
+    <form action="/admin/pro_details" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="text" class="form-control" id="name" name="product" placeholder="product name">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="Category" name="Category" placeholder="Category">
+    </div>
+    <div class="form-group">
+        <input type="Number" class="form-control" id="Price" name="Price" placeholder="Price">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="Description" name="Description" placeholder="Description">
+    </div>
+    <label for="image">image</label><br>
+    <img style="width: 150px; height:150px" src="" id="im" alt="">
+    <br>
+    <input type="file" id="image" name="image" onchange="imageupld(event)">
+    {{#if img_err}}
+    <h6 style="color: red;">please choose an image</h6>
+    {{/if}}
+    <br>
+    <button type="submit" class="btn btn-primary mt-4 ml-2">Submit</button>
+</form>
+</div>
+<script>
+   function imageupld(event){
+        document.getElementById('im').src=URL.createObjectURL(event.target.files[0])
+    }
+</script>

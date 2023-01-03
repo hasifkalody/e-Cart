@@ -1,0 +1,37 @@
+<section>
+  <div class="container pt-3" style="display: flex;justify-content: space-between;">
+    <a href="/admin/addAnAdmin" class="btn btn-primary"> Add an admin</a>
+    <a href="/admin/add_product" class="btn btn-success">Add product</a>
+  </div>
+  <div class="container">
+    <table class="table mt-5">
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Title</th>
+          <th scope="col">Category</th>
+          <th scope="col">Price</th>
+          <th scope="col">Image</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each retrieved_products}}
+        <tr>
+          <th scope="row">{{@index}}</th>
+          <td>{{this.product}}</td>
+          <td>{{this.Category}}</td>
+          <td>{{this.Price}}</td>
+          <td><img style="height:50px ;width: 50px;" src="product_images/{{this.id}}.jpg"></td>
+          <td>{{this.Description}}</td>
+          <td><a class='btn btn-danger ' onclick="return confirm('Are you sure?')"
+              href="/admin/delete/{{this.id}}">Delete</a></td>
+          <td><a class='btn btn-primary ' href="/admin/edit/{{this.id}}">Edit</a></td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+
+</section>

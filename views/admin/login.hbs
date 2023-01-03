@@ -1,0 +1,21 @@
+<div style="display:flex; justify-content: center;">
+  <div style="width: 700px;">
+    <form action="/admin/verifyAdmin" method="post">
+      <div class="form-group">
+        <label for="AdminId">Admin Id</label>
+        <input type="text" class="form-control" id="Admin Id1" name="AdminId" aria-describedby="emailHelp"
+          placeholder="Enter Admin Id">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" name="Password" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      {{#if pass}}
+      <p style="color: red">Wrong credentials</p>
+      {{/if}}
+      <br>
+    </form>
+  </div>
+</div>
+

@@ -1,0 +1,31 @@
+<div class="container">
+    <form action="/admin/edit" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="text" class="form-control" id="name" name="product" value="{{product_data.product}}" placeholder="product name">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="Category" name="Category" value="{{product_data.Category}}" placeholder="Category">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="Price" name="Price" value="{{product_data.Price}}" placeholder="Price">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="Description" name="Description" value="{{product_data.Description}}" placeholder="Description">
+    </div>
+    <label for="image">image</label>
+    <br>
+    <img id="imagetag" src="/product_images/{{product_data.id}}.jpg" style="height:100px ;width: 100px;" alt="">
+    <br>
+    <input type="file" id="image" name="image" onchange="uploaded(event)" placeholder="">
+    <br>
+    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+    <input style="display: none;" type="text" name="id" value="{{product_data._id}}">
+</form>
+</div>
+
+<script>
+    function uploaded(event){
+       let url=URL.createObjectURL(event.target.files[0])
+        document.getElementById('imagetag').src=url
+    }
+</script>
